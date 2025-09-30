@@ -21,12 +21,6 @@ type ExerciseHandler struct {
 	useCase ExerciseUseCase
 }
 
-type createExerciseRequest struct {
-	Name        string `json:"name" validate:"required"`
-	BodyPart    string `json:"body_part" validate:"required"` // TODO: 固定で選択式にしたいかも
-	Description string `json:"description"`
-}
-
 func NewExerciseHandler(e *echo.Echo, useCase ExerciseUseCase) {
 	handler := &ExerciseHandler{
 		useCase: useCase,
@@ -35,7 +29,13 @@ func NewExerciseHandler(e *echo.Echo, useCase ExerciseUseCase) {
 	e.GET("/exercises", handler.Fetch)
 	e.GET("/exercises/:id", handler.GetByID)
 	//e.GET("/exercises/search", handler.Search)
-	e.DELETE("/exercises/:id", handler.Delete)
+	e.DELETE("/exercises", handler.Delete)
+}
+
+type createExerciseRequest struct {
+	Name        string `json:"name" validate:"required"`
+	BodyPart    string `json:"body_part" validate:"required"` // TODO: 固定で選択式にしたいかも
+	Description string `json:"description"`
 }
 
 func (e *ExerciseHandler) Create(c echo.Context) error {
@@ -75,10 +75,18 @@ func (e *ExerciseHandler) GetByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, exercise)
 }
 
+type deleteRequest struct {
+	ID string `json:"id" validate:"required"`
+}
+
 func (e *ExerciseHandler) Delete(c echo.Context) error {
-	id := c.Param("id")
+	input := new(deleteRequest)
+	if err := c.Bind(input); err != nil {
+		return err
+	}
+
 	ctx := c.Request().Context()
-	err := e.useCase.Delete(ctx, id)
+	err := e.useCase.Delete(ctx, input.ID)
 	if err != nil {
 		return c.JSON(getStatusCode(err), rest.ResponseError{Message: err.Error()})
 	}
