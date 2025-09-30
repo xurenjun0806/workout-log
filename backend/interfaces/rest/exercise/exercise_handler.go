@@ -10,7 +10,7 @@ import (
 )
 
 type ExerciseUseCase interface {
-	Fetch(ctx context.Context, limit int64) ([]exercise.Exercise, string, error)
+	Fetch(ctx context.Context, limit int64) ([]exercise.Exercise, error)
 	GetByID(ctx context.Context, id string) (exercise.Exercise, error)
 	//Search(ctx context.Context, parm SearchParam)
 	Save(context.Context, *exercise.Exercise) error
@@ -26,7 +26,7 @@ func NewExerciseHandler(e *echo.Echo, useCase ExerciseUseCase) {
 		useCase: useCase,
 	}
 	e.POST("/exercises", handler.Save)
-	//e.GET("/exercises", handler.Fetch)
+	e.GET("/exercises", handler.Fetch)
 	e.GET("/exercises/:id", handler.GetByID)
 	//e.GET("/exercises/search", handler.Search)
 	e.DELETE("/exercises/:id", handler.Delete)
@@ -45,6 +45,17 @@ func (e *ExerciseHandler) Save(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusCreated, exercise)
+}
+
+func (e *ExerciseHandler) Fetch(c echo.Context) error {
+	ctx := c.Request().Context()
+	// TODO: 具体的なLimitに関する実装は後で
+	exercises, err := e.useCase.Fetch(ctx, 100)
+	if err != nil {
+		return c.JSON(getStatusCode(err), rest.ResponseError{Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, exercises)
 }
 
 func (e *ExerciseHandler) GetByID(c echo.Context) error {
