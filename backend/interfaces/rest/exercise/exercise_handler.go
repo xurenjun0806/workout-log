@@ -37,6 +37,9 @@ func (e *ExerciseHandler) Create(c echo.Context) error {
 	if err := c.Bind(input); err != nil {
 		return err
 	}
+	if ok, err := rest.IsRequestValid(input); !ok {
+		return c.JSON(http.StatusBadRequest, rest.ResponseError{Message: err.Error()})
+	}
 
 	ctx := c.Request().Context()
 	exercise, err := e.useCase.CreateExercise(ctx, input.Name, input.BodyPart, input.Description)
