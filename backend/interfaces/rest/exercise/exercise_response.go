@@ -9,7 +9,7 @@ import (
 type ExerciseResponse struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
-	BodyPart    string    `json:"body_part"` // TODO: 固定で選択式にしたいかも
+	BodyPart    string    `json:"body_part"`
 	Description string    `json:"description"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
