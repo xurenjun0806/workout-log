@@ -1,6 +1,10 @@
 package exercise
 
-import "github.com/xurenjun0806/workout-log/backend/domain/seedwork"
+import (
+	"time"
+
+	"github.com/xurenjun0806/workout-log/backend/domain/seedwork"
+)
 
 type ExerciseID struct {
 	seedwork.ID
@@ -9,9 +13,11 @@ type ExerciseID struct {
 // Root
 type Exercise struct {
 	ID          ExerciseID
-	Name        string `json:"name"`
-	BodyPart    string `json:"body_part"` // TODO: 固定で選択式にしたいかも
-	Description string `json:"description"`
+	Name        string
+	BodyPart    string
+	Description string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 func NewExercise(name string, bodyPart string, description string) (*Exercise, error) {
