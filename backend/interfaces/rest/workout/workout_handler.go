@@ -1,4 +1,4 @@
-package rest
+package workout
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/xurenjun0806/workout-log/backend/domain/aggregates/workout"
+	"github.com/xurenjun0806/workout-log/backend/interfaces/rest"
 )
 
 type WorkoutUseCase interface {
@@ -36,7 +37,7 @@ func (w *WorkoutHandler) Save(c echo.Context) error {
 	ctx := c.Request().Context()
 	err := w.useCase.Save(ctx, ws)
 	if err != nil {
-		return c.JSON(getStatusCode(err), ResponseError{Message: err.Error()})
+		return c.JSON(getStatusCode(err), rest.ResponseError{Message: err.Error()})
 	}
 
 	return c.JSON(http.StatusCreated, ws)
@@ -47,7 +48,7 @@ func (w *WorkoutHandler) GetById(c echo.Context) error {
 	ctx := c.Request().Context()
 	ws, err := w.useCase.GetByID(ctx, id)
 	if err != nil {
-		return c.JSON(getStatusCode(err), ResponseError{Message: err.Error()})
+		return c.JSON(getStatusCode(err), rest.ResponseError{Message: err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, ws)
@@ -58,7 +59,7 @@ func (w *WorkoutHandler) Delete(c echo.Context) error {
 	ctx := c.Request().Context()
 	err := w.useCase.Delete(ctx, id)
 	if err != nil {
-		return c.JSON(getStatusCode(err), ResponseError{Message: err.Error()})
+		return c.JSON(getStatusCode(err), rest.ResponseError{Message: err.Error()})
 	}
 
 	return c.NoContent(http.StatusNoContent)
