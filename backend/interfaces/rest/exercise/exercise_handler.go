@@ -1,4 +1,4 @@
-package rest
+package exercise
 
 import (
 	"context"
@@ -10,11 +10,11 @@ import (
 )
 
 type ExerciseUseCase interface {
-	Fetch(ctx context.Context, limit int64) ([]exercise.Exercise, error)
-	GetByID(ctx context.Context, id string) (exercise.Exercise, error)
+	Fetch(c context.Context, limit int64) ([]exercise.Exercise, error)
+	GetByID(c context.Context, id string) (exercise.Exercise, error)
 	//Search(ctx context.Context, parm SearchParam)
-	Save(context.Context, *exercise.Exercise) error
-	Delete(ctx context.Context, id string) error
+	Save(c context.Context, exercise *exercise.Exercise) error
+	Delete(c context.Context, id string) error
 }
 
 type ExerciseHandler struct {
