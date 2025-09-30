@@ -13,7 +13,7 @@ type ExerciseUseCase interface {
 	Fetch(c context.Context, limit int64) ([]exercise.Exercise, error)
 	GetByID(c context.Context, id string) (exercise.Exercise, error)
 	//Search(ctx context.Context, parm SearchParam)
-	Save(c context.Context, exercise *exercise.Exercise) error
+	CreateExercise(c context.Context, name string, bodyPart string, description string) (exercise.Exercise, error)
 	Delete(c context.Context, id string) error
 }
 
@@ -21,25 +21,31 @@ type ExerciseHandler struct {
 	useCase ExerciseUseCase
 }
 
+type createExerciseRequest struct {
+	Name        string `json:"name" validate:"required"`
+	BodyPart    string `json:"body_part" validate:"required"` // TODO: 固定で選択式にしたいかも
+	Description string `json:"description"`
+}
+
 func NewExerciseHandler(e *echo.Echo, useCase ExerciseUseCase) {
 	handler := &ExerciseHandler{
 		useCase: useCase,
 	}
-	e.POST("/exercises", handler.Save)
+	e.POST("/exercises", handler.Create)
 	e.GET("/exercises", handler.Fetch)
 	e.GET("/exercises/:id", handler.GetByID)
 	//e.GET("/exercises/search", handler.Search)
 	e.DELETE("/exercises/:id", handler.Delete)
 }
 
-func (e *ExerciseHandler) Save(c echo.Context) error {
-	exercise := new(exercise.Exercise)
-	if err := c.Bind(exercise); err != nil {
+func (e *ExerciseHandler) Create(c echo.Context) error {
+	input := new(createExerciseRequest)
+	if err := c.Bind(input); err != nil {
 		return err
 	}
 
 	ctx := c.Request().Context()
-	err := e.useCase.Save(ctx, exercise)
+	exercise, err := e.useCase.CreateExercise(ctx, input.Name, input.BodyPart, input.Description)
 	if err != nil {
 		return c.JSON(getStatusCode(err), rest.ResponseError{Message: err.Error()})
 	}

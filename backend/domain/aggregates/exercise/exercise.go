@@ -9,8 +9,8 @@ type ExerciseID struct {
 // Root
 type Exercise struct {
 	ID          ExerciseID
-	Name        string `json:"name" validate:"required"`
-	BodyPart    string `json:"body_part" validate:"required"` // TODO: 固定で選択式にしたいかも
+	Name        string `json:"name"`
+	BodyPart    string `json:"body_part"` // TODO: 固定で選択式にしたいかも
 	Description string `json:"description"`
 }
 

@@ -21,9 +21,15 @@ func (u *UseCase) GetByID(c context.Context, id string) (exercise.Exercise, erro
 	}, nil
 }
 
-func (u *UseCase) Save(c context.Context, exercise *exercise.Exercise) error {
-	return nil
+func (u *UseCase) CreateExercise(c context.Context, name string, bodyPart string, description string) (exercise.Exercise, error) {
+	return exercise.Exercise{
+		ID:          exercise.ExerciseID{ID: "test"},
+		Name:        name,
+		BodyPart:    bodyPart,
+		Description: description,
+	}, nil
 }
+
 func (u *UseCase) Delete(c context.Context, id string) error {
 	return nil
 }
