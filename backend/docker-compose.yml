@@ -16,16 +16,17 @@ services:
     image: mysql:8.4
     container_name: workout-log-dev-mysql
     hostname: mysql-db
+    env_file: .env
     command: mysqld --user=root
     volumes:
       - ./workout-log.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=workout-log
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE= ${DATABASE_NAME}
+      - MYSQL_USER= ${DATABASE_USER}
+      - MYSQL_PASSWORD= ${DATABASE_PASS}
+      - MYSQL_ROOT_PASSWORD= ${MYSQL_ROOT_PASSWORD}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
