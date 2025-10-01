@@ -2,6 +2,7 @@ services:
   web:
     build: . 
     container_name: workout-log-dev
+    env_file: .env
     ports:
       - 9090:9090
     depends_on:
@@ -9,10 +10,12 @@ services:
         condition: service_healthy
     volumes:
       - ./config.json:/app/config.json
+      - ./.env:/app/.env
 
   mysql:
     image: mysql:8.4
     container_name: workout-log-dev-mysql
+    hostname: mysql-db
     command: mysqld --user=root
     volumes:
       - ./workout-log.sql:/docker-entrypoint-initdb.d/init.sql

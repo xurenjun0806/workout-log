@@ -1,2 +1,13 @@
 CREATE DATABASE  IF NOT EXISTS `workout-log`;
 USE `workout-log`;
+
+CREATE TABLE IF NOT EXISTS exercise (
+    -- 必ずULIDが入る場合固定長なので、VARCHARではなくCHARでよい
+    -- PRIMARY KEYはデフォルトでNOT NULL制約がつくので明記しなくてよい
+    id CHAR(26) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    body_part VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+);
