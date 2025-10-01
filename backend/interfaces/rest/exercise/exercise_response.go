@@ -17,7 +17,7 @@ type ExerciseResponse struct {
 
 func toExerciseResponse(e exercise.Exercise) ExerciseResponse {
 	return ExerciseResponse{
-		ID:          string(e.ID.ID),
+		ID:          string(e.ID),
 		Name:        e.Name,
 		BodyPart:    e.BodyPart,
 		Description: e.Description,

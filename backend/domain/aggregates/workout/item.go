@@ -2,12 +2,14 @@ package workout
 
 import (
 	"github.com/xurenjun0806/workout-log/backend/domain/aggregates/exercise"
-	"github.com/xurenjun0806/workout-log/backend/domain/seedwork"
 )
 
-type WorkoutItemID struct {
-	seedwork.ID
+type WorkoutItemID string
+
+func (wi WorkoutItemID) HasId() bool {
+	return wi != ""
 }
+
 type WorkoutItem struct {
 	ID         WorkoutItemID       `json:"id"`
 	ExerciseID exercise.ExerciseID `json:"exercise_id" validate:"required"`
@@ -16,9 +18,6 @@ type WorkoutItem struct {
 }
 
 func NewWorkoutItem(exerciseID exercise.ExerciseID, position int) (*WorkoutItem, error) {
-	if exerciseID.IsZero() {
-		return nil, exercise.ErrInvalidExerciseID
-	}
 	var wi WorkoutItem = WorkoutItem{
 		ExerciseID: exerciseID,
 		Position:   position,
@@ -31,14 +30,14 @@ func NewWorkoutItem(exerciseID exercise.ExerciseID, position int) (*WorkoutItem,
 }
 
 func (wi *WorkoutItem) IsNew() bool {
-	return wi.ID.IsZero()
+	return !wi.ID.HasId()
 }
 
 func (wi *WorkoutItem) IsValid() bool {
 	if wi == nil {
 		return false
 	}
-	if wi.ExerciseID.IsZero() {
+	if !wi.ExerciseID.HasId() {
 		return false
 	}
 	return true

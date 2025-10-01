@@ -2,13 +2,9 @@ package workout
 
 import (
 	"time"
-
-	"github.com/xurenjun0806/workout-log/backend/domain/seedwork"
 )
 
-type WorkoutSessionID struct {
-	seedwork.ID
-}
+type WorkoutSessionID string
 
 type WorkoutSession struct {
 	ID        WorkoutSessionID `json:"id"`

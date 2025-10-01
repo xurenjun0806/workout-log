@@ -2,12 +2,12 @@ package exercise
 
 import (
 	"time"
-
-	"github.com/xurenjun0806/workout-log/backend/domain/seedwork"
 )
 
-type ExerciseID struct {
-	seedwork.ID
+type ExerciseID string
+
+func (wi ExerciseID) HasId() bool {
+	return wi != ""
 }
 
 // Root
