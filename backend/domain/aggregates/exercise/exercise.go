@@ -24,9 +24,12 @@ func NewExercise(name string, bodyPart string, description string) (*Exercise, e
 	if name == "" {
 		return nil, ErrInvalidExerciseName
 	}
+	now := time.Now()
 	return &Exercise{
 		Name:        name,
 		BodyPart:    bodyPart,
 		Description: description,
+		CreatedAt:   now,
+		UpdatedAt:   now,
 	}, nil
 }

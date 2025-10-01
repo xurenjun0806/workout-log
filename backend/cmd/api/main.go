@@ -12,6 +12,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/xurenjun0806/workout-log/backend/infrastructure/repositories/db/adapter/mysql"
 	rest_exercise "github.com/xurenjun0806/workout-log/backend/interfaces/rest/exercise"
 	"github.com/xurenjun0806/workout-log/backend/interfaces/rest/middleware"
 	usecase_exercise "github.com/xurenjun0806/workout-log/backend/usecase/exercise"
@@ -66,7 +67,8 @@ func main() {
 	e.Use(middleware.SetRequestContextWithTimeout(timeoutContext))
 
 	// TODO: useCaseはいったんダミーで
-	rest_exercise.NewExerciseHandler(e, &usecase_exercise.UseCase{})
+	exerciseRepo := mysql.NewExerciseRepository(dbConn)
+	rest_exercise.NewExerciseHandler(e, usecase_exercise.NewUseCase(exerciseRepo))
 
 	// Start Server
 	address := os.Getenv("SERVER_ADDRESS")

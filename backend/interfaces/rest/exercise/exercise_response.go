@@ -21,5 +21,7 @@ func toExerciseResponse(e exercise.Exercise) ExerciseResponse {
 		Name:        e.Name,
 		BodyPart:    e.BodyPart,
 		Description: e.Description,
+		CreatedAt:   e.CreatedAt,
+		UpdatedAt:   e.UpdatedAt,
 	}
 }

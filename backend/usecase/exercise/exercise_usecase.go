@@ -17,6 +17,12 @@ type UseCase struct {
 	repository Repository
 }
 
+func NewUseCase(repository Repository) *UseCase {
+	return &UseCase{
+		repository: repository,
+	}
+}
+
 func (u *UseCase) Fetch(ctx context.Context, limit int64) ([]exercise.Exercise, error) {
 	if limit == 0 {
 		return make([]exercise.Exercise, 0), nil
