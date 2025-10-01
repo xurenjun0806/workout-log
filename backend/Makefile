@@ -16,7 +16,7 @@ run: verify ## 実行（go run）
 
 build: verify ## ビルド（バイナリ: $(BIN)）
 	@mkdir -p $(BIN_DIR)
-	$(GO) build -o $(BIN) $(CMD_DIR)
+	$(GO) build -trimpath -o $(BIN) $(CMD_DIR)
 	@echo "→ Built $(BIN)"
 
 test: ## テスト（raceあり）
